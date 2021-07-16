@@ -1,0 +1,15 @@
+.basic-layout {
+    min-height: 100vh;
+    background-image: url("https://game-ecommerce-yeison.s3.sa-east-1.amazonaws.com/static/bg-web.jpg");
+    background-size: cover;
+    background-position: center;
+    .content {
+        background-color: $background-gray-light;
+        height: calc(100vh - 130px);
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}

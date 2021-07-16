@@ -1,0 +1,7 @@
+bucket name: game-ecommerce-yeison
+
+politica: S3BucketsAccessGameEcommerce
+
+user: strapi-game-ecommerce
+ID Access Key: AKIATOXUT3D2HO2MH6EV
+Secret Access Key: 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
