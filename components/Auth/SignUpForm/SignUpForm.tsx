@@ -9,16 +9,22 @@ const SignUpForm = ({ showLoginForm }: any) => {
     const initialState: SignUpDataI = {
         firstName: "",
         lastName: "",
-        userName: "",
+        username: "",
         email: "",
         password: ""
     }
 
-    const [formData, setFormData] = useState<SignUpDataI>(initialState)
+    const [formData, setFormData] = useState<SignUpDataI>(initialState);
+    const [errorSubmit, setErrorSubmit] = useState("")
 
     const handleSubmit = async(e: any) => {
 
-        await postSignUp(formData)
+        const res: any = await postSignUp(formData);
+
+        if(res.error){
+            setErrorSubmit(res.error)
+            return;
+        }
 
 
         e.target.reset()
@@ -38,6 +44,7 @@ const SignUpForm = ({ showLoginForm }: any) => {
 
     return (
         <Form className="login-form" onSubmit={handleSubmit}>
+            <span className="errorForm">{errorSubmit}</span>
             <Form.Input
                 name="firstName"
                 type="text"

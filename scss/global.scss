@@ -16,4 +16,12 @@
         color: $font-light;
         margin: 0;
     }
+    .errorForm {
+        font-size: 16px;
+        color: red;
+        margin-bottom: 5px;
+    }
+    .field {
+        margin-top: 25px !important;
+    }
 }
