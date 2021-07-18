@@ -2,21 +2,22 @@ import { useState } from 'react'
 import LoginForm from './LoginForm'
 import SignUpForm from './SignUpForm'
 
-const Auth = ({ onCloseModal, setTitleModal }: any) => {
+const Auth = ({ setTitleModalSingUp, setTitleModalLogIn, onCloseModal }: any) => {
 
-    const [showLogin, setShowLogin] = useState(true)
+    const [showLogin, setShowLogin] = useState({show: true})
 
     const showLoginForm = () => {
-        setShowLogin(true)
-        setTitleModal("This is the login form")
+        setShowLogin((prev: {show:boolean}) => ({...prev, show: true}))
+        setTitleModalLogIn();
+
     }
     const showSignUpForm = () => {
-        setShowLogin(false)
-        setTitleModal("This is the Sign Up form")
+        setTitleModalSingUp();
+        setShowLogin((prev: {show:boolean}) => ({...prev, show: false}))
     }
 
 
-    return showLogin ? <LoginForm showSignUpForm={showSignUpForm}/> : <SignUpForm showLoginForm={showLoginForm}/>
+    return showLogin.show ? <LoginForm onCloseModal={onCloseModal} showSignUpForm={showSignUpForm}/> : <SignUpForm showLoginForm={showLoginForm} onCloseModal={onCloseModal}/>
 }
 
 export default Auth

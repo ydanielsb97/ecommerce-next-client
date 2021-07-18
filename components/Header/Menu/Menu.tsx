@@ -5,11 +5,22 @@ import { useState } from "react";
 import Auth from "../../Auth";
 
 const MenuWeb = () => {
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState({show: false})
+    const [titleModal, setTitleModal] = useState({title: "Log In"})
 
-    const onShowModal = () => setShowModal(true);
-    const onCloseModal = () => setShowModal(false);
-    const [titleModal, setTitleModal] = useState("This is the login form")
+
+    const setTitleModalLogIn = () => {
+        setTitleModal((prev: {title:string}) => ({...prev, title: "Log In"}))
+
+    }
+
+    const setTitleModalSingUp = () => {
+        setTitleModal((prev: {title:string}) => ({...prev, title: "Sign Up"}))
+    }
+
+
+    const onShowModal = () => setShowModal((prev: any) => ({...prev, show: true}));
+    const onCloseModal = () => setShowModal((prev: any) => ({...prev, show: false}));
 
     return (
         <div className="menu">
@@ -24,8 +35,8 @@ const MenuWeb = () => {
                     </Grid.Column>
                 </Grid>
             </Container>
-            <BasicModal show={showModal} title={titleModal} setShow={setShowModal} size="small">
-                <Auth setTitleModal={setTitleModal}/>
+            <BasicModal show={showModal.show} title={titleModal.title} onCloseModal={onCloseModal} size="small">
+                <Auth onCloseModal={onCloseModal} setTitleModalSingUp={setTitleModalSingUp} setTitleModalLogIn={setTitleModalLogIn}/>
             </BasicModal>
 
         </div>

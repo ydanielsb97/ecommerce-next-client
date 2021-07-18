@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Form, Button } from "semantic-ui-react";
 import { SignUpDataI } from "../../../interfaces/SignUpData.interface";
 import { postSignUp } from "../../../providers/Access.provider";
+import { toast } from "react-toastify";
 
-const SignUpForm = ({ showLoginForm }: any) => {
+
+const SignUpForm = ({ showLoginForm, onCloseModal }: any) => {
 
     const initialState: SignUpDataI = {
         firstName: "",
@@ -15,21 +16,29 @@ const SignUpForm = ({ showLoginForm }: any) => {
     }
 
     const [formData, setFormData] = useState<SignUpDataI>(initialState);
-    const [errorSubmit, setErrorSubmit] = useState("")
 
     const handleSubmit = async(e: any) => {
+
+        const isValid = validationFormData(formData)
+        console.log(isValid)
+        if(!isValid){
+            toast.error("Please verify that all fields are complete and try again")
+            return;
+        }
 
         const res: any = await postSignUp(formData);
 
         if(res.error){
-            setErrorSubmit(res.error)
+            toast.error(res.error)
             return;
         }
-
+        toast.success(`Welcome ${res.data.user.firstName}`);
+        console.log(res)
 
         e.target.reset()
 
         setFormData((prev: SignUpDataI) => ({...prev, initialState}))
+        onCloseModal()
 
     }
 
@@ -41,15 +50,33 @@ const SignUpForm = ({ showLoginForm }: any) => {
 
     }
 
+    const validationFormData = (data: any) => {
+
+        var isValid = true;
+        Object.keys(data).forEach((e:string) => {
+            //@ts-ignore
+            const value = data[`${e}`]
+            console.log(value)
+            if(!value || value.lenth <= 0) {
+                isValid = false;
+                return isValid;
+            }
+            
+        })
+
+        return isValid;
+    }
+
 
     return (
         <Form className="login-form" onSubmit={handleSubmit}>
-            <span className="errorForm">{errorSubmit}</span>
+            {/* <span className="errorForm">{errorSubmit.error}</span> */}
             <Form.Input
                 name="firstName"
                 type="text"
                 placeholder="firstName"
                 required
+                value={formData.firstName}
                 onChange={handleChangeInput}
             />
 
@@ -58,14 +85,16 @@ const SignUpForm = ({ showLoginForm }: any) => {
                 type="text"
                 placeholder="lastName"
                 required
+                value={formData.lastName}
                 onChange={handleChangeInput}
             />
 
             <Form.Input
-                name="userName"
+                name="username"
                 type="text"
                 placeholder="userName"
                 required
+                value={formData.username}
                 onChange={handleChangeInput}
             />
 
@@ -74,6 +103,7 @@ const SignUpForm = ({ showLoginForm }: any) => {
                 type="text"
                 placeholder="email"
                 required
+                value={formData.email}
                 onChange={handleChangeInput}
             />
 
@@ -83,10 +113,11 @@ const SignUpForm = ({ showLoginForm }: any) => {
                 type="password"
                 placeholder="password"
                 required
+                value={formData.password}
                 onChange={handleChangeInput}
             />
             <div className="actions">
-                <Button type="button" basic>
+                <Button type="button" onClick={showLoginForm} basic>
                     Log In
                 </Button>
                 <Button type="submit" className="submit">
